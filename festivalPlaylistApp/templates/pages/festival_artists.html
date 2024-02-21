@@ -1,0 +1,97 @@
+<!-- festivalPlaylistApp/templates/pages/festival_artists.html -->
+
+{% extends "base.html" %} {% load static %} {% block page_content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="{% static 'style.css'%}" />
+
+    <title>{{ festival.name }} Artists</title>
+  </head>
+
+
+  <style>
+    .artist-checkboxes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .artist-checkboxes div {
+      margin-bottom: 10px;
+      margin-right: 10px;
+      margin-left: 20px;
+    }
+    input[type="submit"] {
+      background-color: green;
+    }
+    
+    #selectAll {
+      width: 120px;
+    }
+
+  </style>
+  <body>
+    <h2>Artists</h2>
+    <div class="selectFest">
+        <fieldset>
+            <form id="artistForm" method="POST" action="{% url 'selected_artists' %}">
+              {% csrf_token %}
+              <input type="hidden" id="festivalId" value="{{ festival.id }}">
+              <div class="artist-checkboxes">
+                {% for artist in artists %}
+                    <div>
+                    <input type="checkbox" name="artists" value="{{ artist.artist.id }}" id="artist{{ artist.artist.id }}">
+                    <label for="artist{{ artist.artist.id }}">{{ artist.artist.name }}</label>
+                    </div>
+                {% endfor %}
+              </div>
+
+              <div role="group" style="margin-top: 20px;">
+                <input type="submit" />
+                <button id="selectAll">Select All</button>
+              </div>
+            </form>
+          </fieldset>
+
+          <script>
+            document.getElementById('selectAll').addEventListener('click', function(event) {
+                // Prevent default form submission behavior
+                event.preventDefault();
+        
+                var checkboxes = document.querySelectorAll('input[type="checkbox"][name="artists"]');
+                var selectAllButton = document.getElementById('selectAll');
+        
+                var allChecked = true;
+                checkboxes.forEach(function(checkbox) {
+                    if (!checkbox.checked) {
+                        allChecked = false;
+                        checkbox.checked = true;
+                    }
+                });
+        
+                // Toggle the select all button text based on the current state
+                if (allChecked) {
+                    checkboxes.forEach(function(checkbox) {
+                        checkbox.checked = false;
+                    });
+                    selectAllButton.textContent = "Select All";
+                } else {
+                    checkboxes.forEach(function(checkbox) {
+                        checkbox.checked = true;
+                    });
+                    selectAllButton.textContent = "Deselect All";
+                }
+            });
+        </script>
+          
+          
+  </body>
+
+</html>
+
+
+
+{% endblock page_content %}

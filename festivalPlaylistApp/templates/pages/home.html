@@ -1,0 +1,51 @@
+<!-- festivalPlaylistApp/templates/pages/home.html-->
+
+{% extends "base.html" %} {% load static %} {% block page_content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="{% static 'style.css'%}" />
+
+    <title>Hello world!</title>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Festival Playlist Generator</h1>
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('select[name="select"]').on("change", function () {
+          var festivalId = $(this).val();
+          $.ajax({
+            url: "/festival/" + festivalId + "/",
+            type: "GET",
+            success: function (data) {
+              $("#artists").html(data);
+            },
+          });
+        });
+      });
+    </script>
+
+    <div class="selectFest">
+      <select name="select" aria-label="Select" required>
+        <option selected disabled value="">Select</option>
+        {% for festival in festivals %}
+        <option value="{{ festival.id }}">{{ festival.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div id="artists">
+      <!-- This is where the list of artists will be displayed -->
+    </div>
+    
+  </body>
+</html>
+
+{% endblock page_content %}

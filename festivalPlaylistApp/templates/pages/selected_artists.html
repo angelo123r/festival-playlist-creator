@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% load static %} {% block page_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Selected Artists </title>
+</head>
+<body>
+    <h2> Selected Artists </h2>
+    {% for artist in selected_artists %}
+        <li> {{ artist.name }} </li>
+    {% endfor %}
+</body>
+</html>
+{% endblock page_content %}
