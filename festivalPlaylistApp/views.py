@@ -21,6 +21,7 @@ def selected_artists(request, festival_id):
         festival = get_object_or_404(Festival, pk=festival_id)
         festival_name = festival.name
         print(festival_name)
+        
 
         to_spotify(selected_artists_names, festival_name)
 
