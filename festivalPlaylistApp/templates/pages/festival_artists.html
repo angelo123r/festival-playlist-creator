@@ -57,7 +57,7 @@
     <h2>Artists</h2>
     <div class="selectFest">
         <fieldset>
-            <form id="artistForm" method="POST" action="{% url 'selected_artists' %}">
+            <form id="artistForm" method="POST" action="{% url 'selected_artists' festival_id=festival.id %}">
               {% csrf_token %}
               <input type="hidden" id="festivalId" value="{{ festival.id }}">
               <div class="artist-checkboxes">

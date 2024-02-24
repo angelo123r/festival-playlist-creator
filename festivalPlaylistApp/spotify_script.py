@@ -63,7 +63,7 @@ def get_artist_top_songs(user_token, artist_id):
     return url_list
 
 
-def create_playlist(user_token, playlist_name):
+def create_playlist(user_token, playlist_name, user_id):
 
     results = user_token.user_playlist_create(user_id, playlist_name, public=True, collaborative=False, description="")
     print(json.dumps(results, sort_keys=True, indent=4))
@@ -74,26 +74,6 @@ def create_playlist(user_token, playlist_name):
 def add_songs_to_playlist(user_token, user_id, playlist_id, tracks):
     user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
 
-""" formatted_datetime = datetime.now().strftime("%Y%m%d%H%M%S%f")
-
-username = "user-" + formatted_datetime
-
-user_token = get_user_token()
-user_id = get_user_info(user_token)
-playlist_id = create_playlist(user_token, "DANCE!")
-
-artist_list = [""]
-full_url_list = []
-
-for artist in artist_list:
-    artist_id = get_artist_id(user_token, artist)
-    url_list = get_artist_top_songs(user_token, artist_id)
-
-    full_url_list.append(url_list)
-
-
-for url_list in full_url_list:
-    add_songs_to_playlist(user_token, user_id, playlist_id, url_list) """
 
 load_dotenv("festivalPlaylistApp\.env.spotipy")
 
@@ -103,3 +83,18 @@ redirect_uri = os.getenv("SPOTIPY_REDIRECT_URI")
 formatted_datetime = datetime.now().strftime("%Y%m%d%H%M%S%f")
 username = "user-" + formatted_datetime
 print(username)
+
+def to_spotify(selected_artists, festival_name):
+    user_token = get_user_token()
+    user_id = get_user_info(user_token)
+    
+    full_url_list = []
+    for artist in selected_artists:
+        artist_id = get_artist_id(user_token, artist)
+        url_list = get_artist_top_songs(user_token, artist_id)
+        full_url_list.append(url_list)
+
+    playlist_id = create_playlist(user_token, festival_name, user_id)
+
+    for track_url in full_url_list:
+        add_songs_to_playlist(user_token, user_id, playlist_id, track_url)
