@@ -23,6 +23,12 @@ def selected_artists(request, festival_id):
         print(festival_name)
         
 
-        to_spotify(selected_artists_names, festival_name)
+        unselected_artists = to_spotify(selected_artists_names, festival_name)
+        print(unselected_artists)
+        print(len(unselected_artists))
 
-        return render(request, "pages/selected_artists.html", {'selected_artists': selected_artists})
+        if len(unselected_artists) == 0:
+            return render(request, "pages/selected_artists.html", {'unselected_artists': unselected_artists})
+
+
+        return render(request, "pages/successful.html")

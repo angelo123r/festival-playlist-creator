@@ -9,7 +9,6 @@ import sys
 import json
 from datetime import datetime, timedelta
 
-unselected_artists = []
 
 def get_user_token():
     scope = "playlist-modify-public"
@@ -23,15 +22,6 @@ def get_user_token():
         print(f"Cache file not found: {cache_filename}")
     except Exception as e:
         print(f"Error obtaining user token: {e}")
-    
-    try:
-        os.remove(cache_filename)
-        print(f"Cache file removed: {cache_filename}")
-    except FileNotFoundError:
-        print(f"Cache file not found: {cache_filename}")
-    except Exception as e:
-        print(f"Error removing cache file: {e}")
-        
     return None
 
 
@@ -57,9 +47,8 @@ def get_artist_id(user_token, artist, unselected_artists):
     if (artist_name.lower() != query.lower()):
         print(f"Artist Name: {artist_name} does not match query: {query}")
         unselected_artists.append(artist)
-        return None
 
-    return artist_id
+    return artist_id, unselected_artists
     
 
 def get_artist_top_songs(user_token, artist_id):
@@ -100,8 +89,9 @@ def to_spotify(selected_artists, festival_name):
     user_id = get_user_info(user_token)
     
     full_url_list = []
+    unselected_artists = []
     for artist in selected_artists:
-        artist_id = get_artist_id(user_token, artist, unselected_artists)
+        artist_id, unselected_artists = get_artist_id(user_token, artist, unselected_artists)
         if (artist_id == None):
             continue
         url_list = get_artist_top_songs(user_token, artist_id)
@@ -111,4 +101,5 @@ def to_spotify(selected_artists, festival_name):
 
     for track_url in full_url_list:
         add_songs_to_playlist(user_token, user_id, playlist_id, track_url)   
-    print(unselected_artists)
+
+    return unselected_artists

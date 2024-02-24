@@ -8,9 +8,9 @@
     <title> Selected Artists </title>
 </head>
 <body>
-    <h2> Selected Artists </h2>
-    {% for artist in selected_artists %}
-        <li> {{ artist.name }} </li>
+    <h2> Artists Not Added to Playlist </h2>
+    {% for artist in unselected_artists %}
+        <li> {{ artist }} </li>
     {% endfor %}
 </body>
 </html>
