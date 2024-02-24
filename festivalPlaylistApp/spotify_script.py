@@ -9,6 +9,7 @@ import sys
 import json
 from datetime import datetime, timedelta
 
+unselected_artists = []
 
 def get_user_token():
     scope = "playlist-modify-public"
@@ -42,7 +43,7 @@ def get_user_info(user_token):
     return user_id
 
 
-def get_artist_id(user_token, artist):
+def get_artist_id(user_token, artist, unselected_artists):
     query = artist.lower()
     results = user_token.search(query, 1, 0, "artist")
 
@@ -55,7 +56,9 @@ def get_artist_id(user_token, artist):
 
     if (artist_name.lower() != query.lower()):
         print(f"Artist Name: {artist_name} does not match query: {query}")
+        unselected_artists.append(artist)
         return None
+
     return artist_id
     
 
@@ -98,7 +101,7 @@ def to_spotify(selected_artists, festival_name):
     
     full_url_list = []
     for artist in selected_artists:
-        artist_id = get_artist_id(user_token, artist)
+        artist_id = get_artist_id(user_token, artist, unselected_artists)
         if (artist_id == None):
             continue
         url_list = get_artist_top_songs(user_token, artist_id)
@@ -107,4 +110,5 @@ def to_spotify(selected_artists, festival_name):
     playlist_id = create_playlist(user_token, festival_name, user_id)
 
     for track_url in full_url_list:
-        add_songs_to_playlist(user_token, user_id, playlist_id, track_url)
+        add_songs_to_playlist(user_token, user_id, playlist_id, track_url)   
+    print(unselected_artists)
