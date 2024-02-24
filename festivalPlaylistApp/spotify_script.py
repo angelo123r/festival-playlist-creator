@@ -43,11 +43,19 @@ def get_user_info(user_token):
 
 
 def get_artist_id(user_token, artist):
-    query = artist
+    query = artist.lower()
     results = user_token.search(query, 1, 0, "artist")
 
     artist_id = results['artists']['items'][0]['id']
+    artist_name = results['artists']['items'][0]['name']
+    print(f"Artist Name: {artist_name}")
+    
+    artist_name = artist_name.replace("’", "'")
+    query = query.replace("’", "'")
 
+    if (artist_name.lower() != query.lower()):
+        print(f"Artist Name: {artist_name} does not match query: {query}")
+        return None
     return artist_id
     
 
@@ -75,7 +83,7 @@ def add_songs_to_playlist(user_token, user_id, playlist_id, tracks):
     user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
 
 
-load_dotenv("festivalPlaylistApp\.env.spotipy")
+load_dotenv("festivalPlaylistApp\\.env.spotipy")
 
 client_id = os.getenv("SPOTIPY_CLIENT_ID")
 client_secret = os.getenv("SPOTIPY_CLIENT_SECRET")
@@ -91,6 +99,8 @@ def to_spotify(selected_artists, festival_name):
     full_url_list = []
     for artist in selected_artists:
         artist_id = get_artist_id(user_token, artist)
+        if (artist_id == None):
+            continue
         url_list = get_artist_top_songs(user_token, artist_id)
         full_url_list.append(url_list)
 
