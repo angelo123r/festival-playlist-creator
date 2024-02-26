@@ -1,17 +1,68 @@
-{% extends "base.html" %} {% load static %} {% block page_content %}
+{% extends "base.html" %} 
+{% load static %} 
+{% block page_content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.purple.min.css" />
-    <title> Selected Artists </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+      body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      :root {
+        --pico-border-radius: 2rem;
+        --pico-typography-spacing-vertical: 1.5rem;
+        --pico-form-element-spacing-vertical: 1rem;
+        --pico-form-element-spacing-horizontal: 1.25rem;
+      }
+      h2 {
+        --pico-font-family: "Raleway", sans-serif;
+        --pico-font-weight: 100;
+        --pico-typography-spacing-vertical: 0.5rem;
+        --pico-font-size: 2.5rem;
+        text-align: center; /* Center the text horizontally */
+      }
+    </style>
+    <title> Unselected Artists </title>
 </head>
+
+<dialog id="messageDialog" open>
+    <article>
+      <h2> Message </h2>
+      <p> The following artists were not able to be imported to the playlist: </p>
+      <ul>
+        {% for artist in unselected_artists %}
+            <li> {{ artist }} </li>
+        {% endfor %}
+      </ul>
+      <footer>
+        <button id="continueButton" className="secondary">
+          Continue
+        </button>
+      </footer>
+    </article>
+  </dialog>
+
+<script>
+    const dialog = document.getElementById('messageDialog');
+    const continueButton = document.getElementById('continueButton');
+
+    continueButton.addEventListener('click', () => {
+      dialog.close();
+    });
+</script>
+
 <body>
-    <h2> Artists Not Added to Playlist </h2>
-    {% for artist in unselected_artists %}
-        <li> {{ artist }} </li>
-    {% endfor %}
+   <h1> Your playlist has been created! </h1>
 </body>
 </html>
 {% endblock page_content %}
