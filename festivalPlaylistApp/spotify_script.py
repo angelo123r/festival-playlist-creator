@@ -35,7 +35,7 @@ def get_user_info(user_token):
 
 def get_artist_id(user_token, artist, unselected_artists):
     query = artist.lower()
-    results = user_token.search(query, 1, 0, "artist")
+    results = user_token.search(q=query, type="artist")
 
     artist_id = results['artists']['items'][0]['id']
     artist_name = results['artists']['items'][0]['name']
@@ -47,6 +47,7 @@ def get_artist_id(user_token, artist, unselected_artists):
     if (artist_name.lower() != query.lower()):
         print(f"Artist Name: {artist_name} does not match query: {query}")
         unselected_artists.append(artist)
+        artist_id = None;
 
     return artist_id, unselected_artists
     

@@ -27,7 +27,7 @@ def selected_artists(request, festival_id):
         print(unselected_artists)
         print(len(unselected_artists))
 
-        if len(unselected_artists) == 0:
+        if len(unselected_artists) > 0:
             return render(request, "pages/selected_artists.html", {'unselected_artists': unselected_artists})
 
 
