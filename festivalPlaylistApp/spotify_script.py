@@ -98,6 +98,8 @@ def to_spotify(selected_artists, festival_name):
         url_list = get_artist_top_songs(user_token, artist_id)
         full_url_list.append(url_list)
 
+    if (len(full_url_list) == 0):
+        return unselected_artists
     playlist_id = create_playlist(user_token, festival_name, user_id)
 
     for track_url in full_url_list:
