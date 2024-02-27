@@ -73,7 +73,7 @@
                     </div>
                 {% endfor %}
               </div>
-
+              <span id="loadingMessage" style="display: none;" aria-busy="true">Generating your playlist...</span>
               <div role="group" style="margin-top: 20px;">
                 <input type="submit" />
                 <button id="selectAll">Select All</button>
@@ -110,6 +110,15 @@
                     selectAllButton.textContent = "Deselect All";
                 }
             });
+        </script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function(){
+            $("form").on("submit", function(){
+                $("#loadingMessage").show();
+            });
+        });
         </script>
           
           
