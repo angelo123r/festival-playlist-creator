@@ -1,12 +1,26 @@
 {% extends "base.html" %}
 {% load static %}
 {% block page_content %}
+<html lang="en">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Your page-specific content goes here -->
+<style>
+    .center-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        margin-top: -100px;
+    }
+</style>
 
+<div class="center-content">
     <h2>No Artists were Added</h2>
     <a href="{% url 'home' %}">Return to home</a>
+</div>
+</html>
 
-    <!-- Additional content for the new page if needed -->
-
-{% endblock %}
+{% endblock page_content %}
