@@ -1,27 +1,27 @@
 import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 import os
-import spotipy.util as util
 import webbrowser
 import sys
 import json
 from datetime import datetime, timedelta
+from spotipy.oauth2 import SpotifyOAuth
 
 
-def get_user_token():
+def get_user_token(username):
     scope = "playlist-modify-public"
     cache_filename = f".cache-{username}"
 
     try:
-        token = util.prompt_for_user_token(username, scope)
+        token = spotipy.util.prompt_for_user_token(username, scope)
         user_token = spotipy.Spotify(auth=token)
         return user_token
     except FileNotFoundError:
         print(f"Cache file not found: {cache_filename}")
-    except Exception as e:
+    except spotipy.SpotifyException as e:
         print(f"Error obtaining user token: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
     return None
 
 
@@ -73,7 +73,9 @@ def create_playlist(user_token, playlist_name, user_id):
 
 
 def add_songs_to_playlist(user_token, user_id, playlist_id, tracks):
-    user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
+    # Current workaround since user_playlist_add_tracks does not work
+    # user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
+    user_token.playlist_replace_items(playlist_id, tracks)
 
 
 load_dotenv("festivalPlaylistApp\\.env.spotipy")
@@ -86,7 +88,10 @@ username = "user-" + formatted_datetime
 print(username)
 
 def to_spotify(selected_artists, festival_name):
-    user_token = get_user_token()
+    user_token = get_user_token(username)
+    # If user closes out of spotify authentication without logging in
+    if (user_token == None):
+        return []
     user_id = get_user_info(user_token)
     
     full_url_list = []
