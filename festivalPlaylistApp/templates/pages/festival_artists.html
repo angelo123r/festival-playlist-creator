@@ -112,16 +112,22 @@
             });
         </script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script>
-        $(document).ready(function(){
-            $("form").on("submit", function(){
-                $("#loadingMessage").show();
-            });
-        });
-        </script>
+
+<script>
+$(document).ready(function(){
+  $("#artistForm").on("submit", function(e){
+        var checked = $("input[type='checkbox'][name='artists']:checked").length;
+        if(checked == 0){
+            e.preventDefault();
+            alert("Please select at least one artist");
+        } else {
+            $("#loadingMessage").show();
+        }
+    });
+});
+</script>
           
-          
+ 
   </body>
 
 </html>

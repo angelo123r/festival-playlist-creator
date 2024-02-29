@@ -11,33 +11,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
-      body, html {
-        height: 100%;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
       :root {
         --pico-border-radius: 2rem;
-        --pico-typography-spacing-vertical: 1.5rem;
-        --pico-form-element-spacing-vertical: 1rem;
-        --pico-form-element-spacing-horizontal: 1.25rem;
       }
-      h2 {
+      .message {
         --pico-font-family: "Raleway", sans-serif;
         --pico-font-weight: 100;
         --pico-typography-spacing-vertical: 0.5rem;
         --pico-font-size: 2.5rem;
         text-align: center; /* Center the text horizontally */
       }
+      .center-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        margin-top: -100px;
+    }
     </style>
     <title> Unselected Artists </title>
 </head>
 
+
 <dialog id="messageDialog" open>
     <article>
-      <h2> Message </h2>
+      <h2 class = "message"> Message </h2>
       <p> The following artists were not able to be imported to the playlist: </p>
       <ul>
         {% for artist in unselected_artists %}
@@ -62,7 +62,10 @@
 </script>
 
 <body>
-   <h1> Your playlist has been created! </h1>
-</body>
+    <div class="center-content">
+        <h2>Artists Successfully Added</h2>
+        <p>Congratulations! Your playlist has been created.</p>
+        <a href="{% url 'home' %}">Create Another Playlist</a>
+    </div></body>
 </html>
 {% endblock page_content %}
