@@ -44,7 +44,7 @@ def get_artist_id(user_token, artist, unselected_artists):
     artist_name = artist_name.replace("’", "'")
     query = query.replace("’", "'")
 
-    if (artist_name.lower() != query.lower()):
+    if (artist_name.lower().replace(" ", "") != query.lower().strip().replace(" ", "")):
         print(f"Artist Name: {artist_name} does not match query: {query}")
         unselected_artists.append(artist)
         artist_id = None
