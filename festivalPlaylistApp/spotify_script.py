@@ -6,6 +6,8 @@ import sys
 import json
 from datetime import datetime, timedelta
 from spotipy.oauth2 import SpotifyOAuth
+from unidecode import unidecode
+import re
 
 
 def get_user_token(username, max_retries=3):
@@ -51,7 +53,7 @@ def get_artist_id(user_token, artist, unselected_artists):
     artist_name = artist_name.replace("’", "'")
     query = query.replace("’", "'")
 
-    if (artist_name.lower() != query.lower()):
+    if (re.sub(r'\W+', '', unidecode(artist_name.lower().replace(" ", ""))) != re.sub(r'\W+', '', unidecode(query.lower().strip().replace(" ", "")))):
         print(f"Artist Name: {artist_name} does not match query: {query}")
         unselected_artists.append(artist)
         artist_id = None
