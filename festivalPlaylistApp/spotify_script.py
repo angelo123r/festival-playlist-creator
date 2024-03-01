@@ -39,6 +39,10 @@ def get_artist_id(user_token, artist, unselected_artists):
     query = artist.lower()
     results = user_token.search(q=query, type="artist")    
 
+    if results['artists']['items'] == []:
+        unselected_artists.append(artist)
+        return None, unselected_artists
+    
     artist_id = results['artists']['items'][0]['id']
     artist_name = results['artists']['items'][0]['name']
     print(f"Artist Name: {artist_name}")
