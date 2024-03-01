@@ -14,12 +14,12 @@
       :root {
         --pico-border-radius: 2rem;
       }
-      .message {
+      .message, .p-message {
         --pico-font-family: "Raleway", sans-serif;
         --pico-font-weight: 100;
         --pico-typography-spacing-vertical: 0.5rem;
         --pico-font-size: 2.5rem;
-        text-align: center; /* Center the text horizontally */
+        text-align: center;
       }
       .center-content {
         display: flex;
@@ -38,7 +38,7 @@
 <dialog id="messageDialog" open>
     <article>
       <h2 class = "message"> Message </h2>
-      <p> The following artists were not able to be imported to the playlist: </p>
+      <p class="p-message"> The following artists were not able to be imported to the playlist: </p>
       <ul>
         {% for artist in unselected_artists %}
             <li> {{ artist }} </li>

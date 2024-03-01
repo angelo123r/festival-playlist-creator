@@ -89,9 +89,7 @@ print(username)
 
 def to_spotify(selected_artists, festival_name):
     user_token = get_user_token(username)
-    # If user closes out of spotify authentication without logging in
-    if (user_token == None):
-        return []
+
     user_id = get_user_info(user_token)
     
     full_url_list = []
