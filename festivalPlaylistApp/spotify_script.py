@@ -8,20 +8,27 @@ from datetime import datetime, timedelta
 from spotipy.oauth2 import SpotifyOAuth
 
 
-def get_user_token(username):
+def get_user_token(username, max_retries=3):
     scope = "playlist-modify-public"
     cache_filename = f".cache-{username}"
 
-    try:
-        token = spotipy.util.prompt_for_user_token(username, scope)
-        user_token = spotipy.Spotify(auth=token)
-        return user_token
-    except FileNotFoundError:
-        print(f"Cache file not found: {cache_filename}")
-    except spotipy.SpotifyException as e:
-        print(f"Error obtaining user token: {e}")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+    retries = 0
+    while retries < max_retries:
+        try:
+            token = spotipy.util.prompt_for_user_token(username, scope)
+            user_token = spotipy.Spotify(auth=token)
+            return user_token
+        except FileNotFoundError:
+            print(f"Cache file not found: {cache_filename}")
+            break  # No need to retry for file not found error
+        except spotipy.SpotifyException as e:
+            print(f"Error obtaining user token: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
+        retries += 1
+
+    print(f"Max retries reached. Unable to obtain user token.")
     return None
 
 
