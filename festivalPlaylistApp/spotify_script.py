@@ -44,14 +44,18 @@ def get_user_info(user_token):
 
 def get_artist_id(user_token, artist, unselected_artists):
     query = artist.lower()
-    results = user_token.search(q=query, type="artist")
+    results = user_token.search(q=query, type="artist")    
 
+    if results['artists']['items'] == []:
+        unselected_artists.append(artist)
+        return None, unselected_artists
+    
     artist_id = results['artists']['items'][0]['id']
     artist_name = results['artists']['items'][0]['name']
     print(f"Artist Name: {artist_name}")
     
-    artist_name = artist_name.replace("’", "'")
-    query = query.replace("’", "'")
+    artist_name = artist_name.replace("’", "'").replace('&','and')
+    query = query.replace("’", "'").replace('&','and')
 
     if (re.sub(r'\W+', '', unidecode(artist_name.lower().replace(" ", ""))) != re.sub(r'\W+', '', unidecode(query.lower().strip().replace(" ", "")))):
         print(f"Artist Name: {artist_name} does not match query: {query}")
@@ -87,6 +91,7 @@ def create_playlist(user_token, playlist_name, user_id):
 
 def add_songs_to_playlist(user_token, user_id, playlist_id, tracks):
      user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
+    user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
 
 
 load_dotenv("festivalPlaylistApp\\.env.spotipy")
