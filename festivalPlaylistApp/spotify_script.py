@@ -43,26 +43,31 @@ def get_user_info(user_token):
 
 
 def get_artist_id(user_token, artist, unselected_artists):
-    query = artist.lower()
-    results = user_token.search(q=query, type="artist")    
+    try:
+        query = artist.lower()
+        results = user_token.search(q=query, type="artist")    
 
-    if results['artists']['items'] == []:
-        unselected_artists.append(artist)
+        if results['artists']['items'] == []:
+            unselected_artists.append(artist)
+            return None, unselected_artists
+        
+        artist_id = results['artists']['items'][0]['id']
+        artist_name = results['artists']['items'][0]['name']
+        print(f"Artist Name: {artist_name}")
+        
+        artist_name = artist_name.replace("’", "'").replace('&','and')
+        query = query.replace("’", "'").replace('&','and')
+
+        if (re.sub(r'\W+', '', unidecode(artist_name.lower().replace(" ", ""))) != re.sub(r'\W+', '', unidecode(query.lower().strip().replace(" ", "")))):
+            print(f"Artist Name: {artist_name} does not match query: {query}")
+            unselected_artists.append(artist)
+            artist_id = None
+
+        return artist_id, unselected_artists
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
         return None, unselected_artists
-    
-    artist_id = results['artists']['items'][0]['id']
-    artist_name = results['artists']['items'][0]['name']
-    print(f"Artist Name: {artist_name}")
-    
-    artist_name = artist_name.replace("’", "'").replace('&','and')
-    query = query.replace("’", "'").replace('&','and')
-
-    if (re.sub(r'\W+', '', unidecode(artist_name.lower().replace(" ", ""))) != re.sub(r'\W+', '', unidecode(query.lower().strip().replace(" ", "")))):
-        print(f"Artist Name: {artist_name} does not match query: {query}")
-        unselected_artists.append(artist)
-        artist_id = None
-
-    return artist_id, unselected_artists
     
 
 def get_artist_top_songs(user_token, artist_id):
@@ -90,7 +95,10 @@ def create_playlist(user_token, playlist_name, user_id):
 
 
 def add_songs_to_playlist(user_token, user_id, playlist_id, tracks):
-    user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
+    try:
+        user_token.user_playlist_add_tracks(user_id, playlist_id, tracks)
+    except Exception as e:
+        print(f"An error occurred while adding tracks to the playlist: {e}")
 
 
 load_dotenv("festivalPlaylistApp\\.env.spotipy")
@@ -116,11 +124,17 @@ def to_spotify(selected_artists, festival_name):
         url_list = get_artist_top_songs(user_token, artist_id)
         full_url_list.append(url_list)
 
-    if (len(full_url_list) == 0):
+    if all(not sublist for sublist in full_url_list):
+        # full_url_list contains only empty sublists
+        unselected_artists.extend(selected_artists)
         return unselected_artists
+
+    if not (full_url_list):
+        return unselected_artists
+    
     playlist_id = create_playlist(user_token, festival_name, user_id)
 
     for track_url in full_url_list:
         add_songs_to_playlist(user_token, user_id, playlist_id, track_url)   
-
+        
     return unselected_artists
