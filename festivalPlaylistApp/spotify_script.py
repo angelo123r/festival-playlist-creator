@@ -90,7 +90,6 @@ def create_playlist(user_token, playlist_name, user_id):
 
 
 def add_songs_to_playlist(user_token, user_id, playlist_id, tracks):
-     user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
     user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
 
 
