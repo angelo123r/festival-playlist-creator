@@ -62,16 +62,20 @@ def get_artist_id(user_token, artist, unselected_artists):
     
 
 def get_artist_top_songs(user_token, artist_id):
-    results = user_token.artist_top_tracks(artist_id, country='US')
+    try:
+        results = user_token.artist_top_tracks(artist_id, country='US')
 
-    url_list = []
+        url_list = []
 
-    for track in results['tracks'][:10]:
-        print('track    : ' + track['name'])
-        url_list.append(track['uri'])
+        for track in results['tracks'][:10]:
+            print('track    : ' + track['name'])
+            url_list.append(track['uri'])
     
-    return url_list
-
+        return url_list
+    
+    except Exception as e:
+        print(f"An error occured: {e}")
+        return []
 
 def create_playlist(user_token, playlist_name, user_id):
 
@@ -82,9 +86,7 @@ def create_playlist(user_token, playlist_name, user_id):
 
 
 def add_songs_to_playlist(user_token, user_id, playlist_id, tracks):
-    # Current workaround since user_playlist_add_tracks does not work
-    # user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
-    user_token.playlist_replace_items(playlist_id, tracks)
+     user_token.user_playlist_add_tracks(user_id, playlist_id, tracks, position=None)
 
 
 load_dotenv("festivalPlaylistApp\\.env.spotipy")
