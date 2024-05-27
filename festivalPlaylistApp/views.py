@@ -11,13 +11,6 @@ from spotipy.exceptions import SpotifyException
 from django.http import HttpResponse
 
 
-
-SPOTIPY_CLIENT_ID = "ed5e6b6708294ee9b26e614b5cbfdac2"
-SPOTIPY_CLIENT_SECRET = "dc7f1d3271c842f9b58941db51918c01"
-SPOTIPY_REDIRECT_URI = "https://festijam.com/callback"
-
-
-
 sp_oauth = SpotifyOAuth(SPOTIPY_CLIENT_ID,SPOTIPY_CLIENT_SECRET,SPOTIPY_REDIRECT_URI,scope="playlist-modify-public", cache_path=None)
 
 
