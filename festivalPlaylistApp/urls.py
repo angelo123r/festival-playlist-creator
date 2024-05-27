@@ -7,4 +7,5 @@ urlpatterns = [
     path("selected_artists/<int:festival_id>/", views.selected_artists, name="selected_artists"),
     path("success/<int:festival_id>/", views.selected_artists, name="success"),
     path("fail/<int:festival_id>/", views.selected_artists, name="fail"),
+    path("callback/", views.callback, name="callback"),
 ]

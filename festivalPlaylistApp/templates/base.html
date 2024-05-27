@@ -1,19 +1,25 @@
-<!-- templates/base.html-->
+<!-- templates/base.html -->
 <!DOCTYPE html>
 {% load static %}
-<htmllang="en">
+<html lang="en">
   <head>
-    <metacharset="utf-8" />
-    <metaname="viewport"content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.purple.min.css"/>
-    <linkrel="stylesheet"href="style.css" 
-    />
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.purple.min.css"/>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <style>
+      .h1 {
+        text-align: center;
+      }
+
+
+    </style>
     <title>Festival Playlist Generator</title>
   </head>
   <body class="container">
-    {% block  page_content %}{% endblock page_content %}
+    {% block page_content %}{% endblock page_content %}
   </body>
 </html>

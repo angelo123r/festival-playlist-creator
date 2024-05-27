@@ -8,36 +8,16 @@ from datetime import datetime, timedelta
 from spotipy.oauth2 import SpotifyOAuth
 from unidecode import unidecode
 import re
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 
-
-def get_user_token(username, max_retries=3):
-    scope = "playlist-modify-public"
-    cache_filename = f".cache-{username}"
-
-    retries = 0
-    while retries < max_retries:
-        try:
-            token = spotipy.util.prompt_for_user_token(username, scope)
-            user_token = spotipy.Spotify(auth=token)
-            return user_token
-        except FileNotFoundError:
-            print(f"Cache file not found: {cache_filename}")
-            break  # No need to retry for file not found error
-        except spotipy.SpotifyException as e:
-            print(f"Error obtaining user token: {e}")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-
-        retries += 1
-
-    print(f"Max retries reached. Unable to obtain user token.")
-    return None
 
 
 def get_user_info(user_token):
     user = user_token.current_user()
 
     user_id = user['id']
+    print(user_id)
 
     return user_id
 
@@ -101,32 +81,28 @@ def add_songs_to_playlist(user_token, user_id, playlist_id, tracks):
         print(f"An error occurred while adding tracks to the playlist: {e}")
 
 
-load_dotenv("festivalPlaylistApp\\.env.spotipy")
-
-client_id = os.getenv("SPOTIPY_CLIENT_ID")
-client_secret = os.getenv("SPOTIPY_CLIENT_SECRET")
-redirect_uri = os.getenv("SPOTIPY_REDIRECT_URI")
-formatted_datetime = datetime.now().strftime("%Y%m%d%H%M%S%f")
-username = "user-" + formatted_datetime
-print(username)
-
-def to_spotify(selected_artists, festival_name):
-    user_token = get_user_token(username)
+def to_spotify(selected_artists, festival_name, sp):
+    user_token = sp
 
     user_id = get_user_info(user_token)
     
     full_url_list = []
     unselected_artists = []
+    print("SELECTED")
+    print(selected_artists)
+    
     for artist in selected_artists:
         artist_id, unselected_artists = get_artist_id(user_token, artist, unselected_artists)
         if (artist_id == None):
             continue
         url_list = get_artist_top_songs(user_token, artist_id)
         full_url_list.append(url_list)
-
     if all(not sublist for sublist in full_url_list):
         # full_url_list contains only empty sublists
-        unselected_artists.extend(selected_artists)
+        if len(selected_artists) == 0:
+            unselected_artists.extend(selected_artists)
+        print("INSIDE SUBLIST")
+        print(unselected_artists)
         return unselected_artists
 
     if not (full_url_list):
