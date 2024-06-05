@@ -1,0 +1,27 @@
+.artist-label-box {
+  display: flex;
+  width: 30%;
+  justify-content: left;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-wrap: wrap;
+  align-content: space-between;
+}
+
+.artist-p {
+  display: flex;
+  font-size: 0.8em;
+  line-height: 110%;
+  max-width: 75%;
+  text-align: left;
+}
+
+.artist-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 10%;
+}
+
+.artist-checkboxes div {
+  margin-bottom: 10px;
+}

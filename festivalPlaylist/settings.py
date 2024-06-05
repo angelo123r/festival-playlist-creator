@@ -30,7 +30,8 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['24.199.84.156', 'festijam.com', 'www.festijam.com']
+ALLOWED_HOSTS = ['24.199.84.156', 'festijam.com',
+                 'www.festijam.com', '127.0.0.1']
 
 
 # Application definition
@@ -64,7 +65,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / "templates/",
-            ],
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,7 +134,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = '/var/www/html/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "festivalPlaylistApp/static")
+    os.path.join(BASE_DIR, "festivalPlaylistApp/templates/static/")
 ]
 
 # Default primary key field type
