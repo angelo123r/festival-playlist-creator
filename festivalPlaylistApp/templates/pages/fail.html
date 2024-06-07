@@ -1,26 +1,68 @@
-{% extends "base.html" %}
-{% load static %}
-{% block page_content %}
+{% extends "base.html" %} {% load static %} {% block page_content %}
 <html lang="en">
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap"
+    rel="stylesheet"
+  />
 
-<style>
-    .center-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        text-align: center;
-        margin-top: -100px;
+  <style>
+    @font-face {
+      font-family: "SallyFont";
+      src: url('{% static "fonts/TheSally-YzoRq.ttf" %}') format("truetype");
     }
-</style>
 
-<div class="center-content">
-    <h2>No Artists were Added</h2>
-    <a href="{% url 'home' %}">Return to home</a>
-</div>
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin-inline: 20%;
+      margin-block: 5%;
+    }
+
+    h1 {
+      --pico-font-family: "SallyFont", sans-serif;
+      --pico-typography-spacing-vertical: 0.5rem;
+      --pico-font-size: 3.5rem;
+      font-weight: 100;
+      text-align: center;
+      background: linear-gradient(to right, #e4bcf5, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .a-h1 {
+      display: flex;
+      width: -moz-fit-content;
+      width: fit-content;
+    }
+
+    .fail-h2 {
+      --pico-font-family: "Poetsen One", sans-serif;
+      color: #f95252;
+    }
+
+    .a-return-home {
+      --pico-font-family: "Poetsen One", sans-serif;
+      color: #b300ff;
+    }
+  </style>
+
+  <header>
+    <a href="{% url 'home' %}" class="a-h1">
+      <h1>Festijam</h1>
+    </a>
+  </header>
+
+  <div class="center-content">
+    <h2 class="fail-h2">Failed to Add Artists</h2>
+    <p>Sorry, we were unable to create the playlist.</p>
+    <p>Spotify was not able to find the exact artist.</p>
+    <a href="{% url 'home' %}" class="a-return-home">Return to home</a>
+  </div>
 </html>
 
 {% endblock page_content %}

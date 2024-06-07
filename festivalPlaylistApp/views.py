@@ -1,31 +1,37 @@
+from django.http import HttpResponse
+from spotipy.exceptions import SpotifyException
+from spotipy import Spotify
+import os
 from django.shortcuts import render, get_object_or_404
 from .models import Festival, FestivalArtist, Artist
 from .spotify_script import to_spotify
 from django.shortcuts import render, get_object_or_404, redirect
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-import os
-from spotipy import Spotify
-from spotipy.oauth2 import SpotifyOAuth
-from spotipy.exceptions import SpotifyException
-from django.http import HttpResponse
+load_dotenv('festivalPlaylistApp\.env.spotipy')
 
 
-sp_oauth = SpotifyOAuth(SPOTIPY_CLIENT_ID,SPOTIPY_CLIENT_SECRET,SPOTIPY_REDIRECT_URI,scope="playlist-modify-public", cache_path=None)
+SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
+SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
+SPOTIPY_REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI')
+
+sp_oauth = SpotifyOAuth(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET,
+                        SPOTIPY_REDIRECT_URI, scope="playlist-modify-public", cache_path=None)
 
 
 def home(request):
     festivals = Festival.objects.order_by('name').all()
     return render(request, "pages/home.html", {'festivals': festivals})
 
+
 def festival_artists(request, festival_id):
     festival = get_object_or_404(Festival, pk=festival_id)
     artists = FestivalArtist.objects.filter(festival=festival)
     return render(request, "pages/festival_artists.html", {'festival': festival, 'artists': artists})
 
-def selected_artists(request, festival_id):
-    #clear tokens
 
+def selected_artists(request, festival_id):
+    # clear tokens
 
     selected_artists_ids = request.POST.getlist('artists')
     selected_artists = Artist.objects.filter(id__in=selected_artists_ids)
@@ -33,8 +39,8 @@ def selected_artists(request, festival_id):
     selected_artists_length = (len(selected_artists))
 
     selected_artists_names = [artist.name for artist in selected_artists]
-    print (selected_artists_names)
-    
+    print(selected_artists_names)
+
     festival = get_object_or_404(Festival, pk=festival_id)
     festival_name = festival.name
 
@@ -46,12 +52,13 @@ def selected_artists(request, festival_id):
             request.session['selected_artists_names'] = selected_artists_names
             auth_url = sp_oauth.get_authorize_url()
             return redirect(auth_url)
-        
+
         access_token = request.session.get('access_token')
         sp = Spotify(auth=access_token)
 
         try:
-            unselected_artists = to_spotify(selected_artists_names, festival_name, sp)
+            unselected_artists = to_spotify(
+                selected_artists_names, festival_name, sp)
             print(unselected_artists)
             print(len(unselected_artists))
 
@@ -61,26 +68,28 @@ def selected_artists(request, festival_id):
                 return render(request, "pages/fail.html")
             return render(request, "pages/successful.html")
         except SpotifyException as e:
-                if e.http_status == 401 and "The access token expired" in str(e):
-                    print("Refreshing token..")
-                    refreshed_token_info = sp_oauth.refresh_access_token(request.session['refresh_token'])
-                    access_token = refreshed_token_info['access_token']
-                    request.session['access_token'] = access_token
-                    print(f"Refreshed!")
-                return redirect("https://festijam.com/")
+            if e.http_status == 401 and "The access token expired" in str(e):
+                print("Refreshing token..")
+                refreshed_token_info = sp_oauth.refresh_access_token(
+                    request.session['refresh_token'])
+                access_token = refreshed_token_info['access_token']
+                request.session['access_token'] = access_token
+                print(f"Refreshed!")
+            return redirect("https://festijam.com/")
 
 
 def callback(request):
-    
+
     print("Callback route reached")
-    
+
     festival_name = request.session.get('festival_name', '')
-    selected_artists_length = request.session.get('selected_artists_length', '')
+    selected_artists_length = request.session.get(
+        'selected_artists_length', '')
     selected_artists_names = request.session.get('selected_artists_names', [])
 
     print(festival_name)
     print(selected_artists_length)
-    print (selected_artists_names)
+    print(selected_artists_names)
 
     token_info = sp_oauth.get_access_token(request.GET.get('code'))
     print("Token info received")
@@ -95,7 +104,8 @@ def callback(request):
     sp = Spotify(auth=access_token)
 
     try:
-        unselected_artists = to_spotify(selected_artists_names, festival_name, sp)
+        unselected_artists = to_spotify(
+            selected_artists_names, festival_name, sp)
         print(unselected_artists)
         print(len(unselected_artists))
 
@@ -109,10 +119,19 @@ def callback(request):
             return render(request, "pages/fail.html")
         return render(request, "pages/successful.html")
     except SpotifyException as e:
-            if e.http_status == 401 and "The access token expired" in str(e):
-                print("Refreshing token..")
-                refreshed_token_info = sp_oauth.refresh_access_token(request.session['refresh_token'])
-                access_token = refreshed_token_info['access_token']
-                request.session['access_token'] = access_token
-                print(f"Refreshed!")
-            return redirect("https://festijam.com/")
+        if e.http_status == 401 and "The access token expired" in str(e):
+            print("Refreshing token..")
+            refreshed_token_info = sp_oauth.refresh_access_token(
+                request.session['refresh_token'])
+            access_token = refreshed_token_info['access_token']
+            request.session['access_token'] = access_token
+            print(f"Refreshed!")
+        return redirect("https://festijam.com/")
+
+
+def about(request):
+    return render(request, "pages/about.html")
+
+
+def contact(request):
+    return render(request, "pages/contact.html")

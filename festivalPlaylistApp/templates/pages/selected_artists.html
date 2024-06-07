@@ -1,20 +1,36 @@
-{% extends "base.html" %} 
-{% load static %} 
-{% block page_content %}
+{% extends "base.html" %} {% load static %} {% block page_content %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.purple.min.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.purple.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      @font-face {
+        font-family: "SallyFont";
+        src: url('{% static "fonts/TheSally-YzoRq.ttf" %}') format("truetype");
+      }
+
       :root {
         --pico-border-radius: 2rem;
       }
-      .message, .p-message {
+
+      .message,
+      .p-message {
         --pico-font-family: "Raleway", sans-serif;
         --pico-font-weight: 100;
         --pico-typography-spacing-vertical: 0.5rem;
@@ -26,58 +42,103 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
         text-align: center;
-        margin-top: -100px;
-    }
+        margin-inline: 20%;
+        margin-block: 5%;
+      }
 
-    .center-donation {
+      .center-donation {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-top: -250px;
-        height: 50vh;
-    }
+        margin-bottom: 10%;
+      }
+
+      h1 {
+        --pico-font-family: "SallyFont", sans-serif;
+        --pico-typography-spacing-vertical: 0.5rem;
+        --pico-font-size: 3.5rem;
+        font-weight: 100;
+        text-align: center;
+        background: linear-gradient(to right, #e4bcf5, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .a-h1 {
+        display: flex;
+        width: -moz-fit-content;
+        width: fit-content;
+      }
+
+      .success-h2 {
+        --pico-font-family: "Poetsen One", sans-serif;
+        background: linear-gradient(to right, #b300ff, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .a-another-playlist {
+        --pico-font-family: "Poetsen One", sans-serif;
+        color: #b300ff;
+      }
     </style>
-    <title> Unselected Artists </title>
-</head>
+    <title>Unselected Artists</title>
+  </head>
+  <header>
+    <a href="{% url 'home' %}" class="a-h1">
+      <h1>Festijam</h1>
+    </a>
+  </header>
 
-
-<dialog id="messageDialog" open>
+  <dialog id="messageDialog" open>
     <article>
-      <h2 class = "message"> Message </h2>
-      <p class="p-message"> The following artists were not able to be imported to the playlist: </p>
+      <h2 class="message">Message</h2>
+      <p class="p-message">Spotify failed to find the following artists:</p>
       <ul>
         {% for artist in unselected_artists %}
-            <li> {{ artist }} </li>
+        <li>{{ artist }}</li>
         {% endfor %}
       </ul>
       <footer>
-        <button id="continueButton" className="secondary">
-          Continue
-        </button>
+        <button id="continueButton" className="secondary">Continue</button>
       </footer>
     </article>
   </dialog>
 
-<script>
-    const dialog = document.getElementById('messageDialog');
-    const continueButton = document.getElementById('continueButton');
+  <script>
+    const dialog = document.getElementById("messageDialog");
+    const continueButton = document.getElementById("continueButton");
 
-    continueButton.addEventListener('click', () => {
+    continueButton.addEventListener("click", () => {
       dialog.close();
     });
-</script>
+  </script>
 
-<body>
+  <body>
     <div class="center-content">
-        <h2>Artists Successfully Added</h2>
-        <p>Congratulations! Your playlist has been created.</p>
-        <a href="{% url 'home' %}">Create Another Playlist</a>
+      <h2 class="success-h2">Artists Successfully Added</h2>
+      <p>Congratulations! Your playlist has been created.</p>
+      <a href="{% url 'home' %}" class="a-another-playlist"
+        >Create Another Playlist</a
+      >
     </div>
     <div class="center-donation">
-      <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="partybear" data-color="#FFDD00" data-emoji="🍺"  data-font="Poppins" data-text="buy me a drink" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
-  </div></body>
+      <script
+        type="text/javascript"
+        src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+        data-name="bmc-button"
+        data-slug="partybear"
+        data-color="#FFDD00"
+        data-emoji="🍺"
+        data-font="Poppins"
+        data-text="buy me a drink"
+        data-outline-color="#000000"
+        data-font-color="#000000"
+        data-coffee-color="#ffffff"
+      ></script>
+    </div>
+  </body>
 </html>
 {% endblock page_content %}

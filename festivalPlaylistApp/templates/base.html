@@ -1,6 +1,8 @@
 <!-- templates/base.html -->
 <!DOCTYPE html>
+
 {% load static %}
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -11,14 +13,64 @@
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.purple.min.css"
     />
     <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="icon" href="{% static 'assets/favicon.ico' %}" />
     <style>
       .h1 {
         text-align: center;
       }
+
+      .footer-h1 {
+        font-size: 2rem;
+      }
+
+      .footer-div {
+        text-align: center;
+        font-size: small;
+      }
+
+      .footer-p {
+        font-weight:700;
+      }
+
+      a {
+        text-decoration: none;
+        color: #999eba;
+      }
+
+
+      
     </style>
-    <title>Festijam</title>
+    <title>Festijam - Music Festival Playlist Generator</title>
+    
   </head>
   <body class="container">
     {% block page_content %}{% endblock page_content %}
+    <hr>
+    <footer>
+      <div class="container">
+          <div class="grid">
+            <div>
+              <a href="{% url 'home' %}">
+                <h1 class="footer-h1">Festijam</h1>
+              </a>
+            </div>
+            <div>
+            </div>
+            <div>
+            </div>
+
+            <div class="footer-div">
+              <a href="{% url 'about' %}">About</a>
+            </div>
+            <div class="footer-div">
+              <p class="footer-p">Contact</p>
+              <a href="{% url 'contact' %}">contact</a>
+            </div>
+            <div class="footer-div">
+              <p class="footer-p">Support</p>
+              <a href="https://buymeacoffee.com/partybear">Buymeacoffee</a>
+          </div>
+      </div>
+    </footer>
   </body>
 </html>

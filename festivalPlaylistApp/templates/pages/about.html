@@ -3,9 +3,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.purple.min.css"
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
     href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap"
     rel="stylesheet"
   />
+
   <style>
     @font-face {
       font-family: "SallyFont";
@@ -20,14 +28,6 @@
       text-align: center;
       margin-inline: 20%;
       margin-block: 5%;
-    }
-
-    .center-donation {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 10%;
     }
 
     h1 {
@@ -47,16 +47,11 @@
       width: fit-content;
     }
 
-    .success-h2 {
+    .about-h2 {
       --pico-font-family: "Poetsen One", sans-serif;
       background: linear-gradient(to right, #b300ff, #ffffff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-    }
-
-    .a-another-playlist {
-      --pico-font-family: "Poetsen One", sans-serif;
-      color: #b300ff;
     }
   </style>
   <header>
@@ -66,26 +61,19 @@
   </header>
 
   <div class="center-content">
-    <h2 class="success-h2">Artists Successfully Added</h2>
-    <p>Congratulations! The artists have been successfully added.</p>
-    <a href="{% url 'home' %}" class="a-another-playlist"
-      >Create Another Playlist</a
-    >
-  </div>
-  <div class="center-donation">
-    <script
-      type="text/javascript"
-      src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
-      data-name="bmc-button"
-      data-slug="partybear"
-      data-color="#FFDD00"
-      data-emoji="🍺"
-      data-font="Poppins"
-      data-text="buy me a drink"
-      data-outline-color="#000000"
-      data-font-color="#000000"
-      data-coffee-color="#ffffff"
-    ></script>
+    <h2 class="about-h2">About</h2>
+    <p>
+      Festijam is a web application that allows users to create a playlist of
+      artists from a music festival lineup. The user can select the artists they
+      want to add to the playlist and Festijam will create a Spotify playlist
+      with the selected artists.
+    </p>
+    <p>
+      Festijam uses the Spotify API to create the playlist. The user must have a
+      Spotify account to use the application.
+    </p>
+    <p>Festival data is retrieved from MusicFestivalWizard.com</p>
   </div>
 </html>
-{% endblock page_content%}
+
+{% endblock page_content %}

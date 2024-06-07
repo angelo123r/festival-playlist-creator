@@ -7,16 +7,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="Festijam: Your ultimate music festival playlist generator. Create personalized playlists for your favorite festivals in seconds."
+    />
+    <meta
+      name="keywords"
+      content="music festival, playlist generator, Festijam, festival playlists, personalized music, music discovery, spotify"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="{% static 'style.css'%}" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.purple.min.css"
     />
-    <title>Festijam</title>
+    <title>Festijam - Music Festival Playlist Generator</title>
   </head>
   <body>
     <main class="container">
-      <h1>Festijam</h1>
+      <a href="{% url 'home' %}" class="a-h1">
+        <h1>Festijam</h1>
+      </a>
     </main>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,19 +41,84 @@
       href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
+      @font-face {
+        font-family: "SallyFont";
+        src: url('{% static "fonts/TheSally-YzoRq.ttf" %}') format("truetype");
+      }
+
       :root {
         --pico-border-radius: 2rem;
         --pico-typography-spacing-vertical: 1.5rem;
         --pico-form-element-spacing-vertical: 1rem;
         --pico-form-element-spacing-horizontal: 1.25rem;
-      }
-      h1 {
-        --pico-font-family: "Raleway", sans-serif;
-        --pico-font-weight: 100;
-        --pico-typography-spacing-vertical: 0.5rem;
-        --pico-font-size: 2.5rem;
         text-align: center;
+      }
+
+      h1 {
+        --pico-font-family: "SallyFont", sans-serif;
+        --pico-typography-spacing-vertical: 0.5rem;
+        --pico-font-size: 3.5rem;
+        font-weight: 100;
+        text-align: center;
+        background: linear-gradient(to right, #e4bcf5, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .welcome-section-h2 {
+        --pico-font-family: "Poetsen One", sans-serif;
+        --pico-font-weight: 900;
+        text-align: center;
+        background: linear-gradient(to right, #b300ff, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-top: 10%;
+        font-size: 2.5rem;
+        word-break: break-word;
+        padding-inline: 20%;
+      }
+
+      .welcome-section-p {
+        text-align: center;
+        padding-inline: 20%;
+      }
+
+      h3 {
+        --pico-font-family: "Poetsen One", sans-serif;
+        background: linear-gradient(to right, #b300ff, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        min-width: 20%;
+        margin-right: 5%;
+      }
+
+      .how-plabel,
+      .get-started-plabel {
+        justify-content: center;
+        text-align: left;
+      }
+
+      #how-section,
+      #get-started-section {
+        margin-top: 20%;
+        text-align: left;
+        display: flex;
+        flex-direction: row;
+      }
+
+      #get-started-section {
+        margin-top: 10%;
+      }
+
+      .a-h1 {
+        display: inline-flex;
+        width: fit-content;
       }
     </style>
 
@@ -54,6 +136,25 @@
           });
         });
       });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var selectElement = document.querySelector(".selectFest select");
+        var sectionElement = document.querySelector("#welcome-section");
+        var howSection = document.querySelector("#how-section");
+        var getStartedSection = document.querySelector("#get-started-section");
+
+        selectElement.addEventListener("change", function () {
+          if (this.value) {
+            sectionElement.style.display = "none";
+            howSection.style.display = "none";
+            getStartedSection.style.display = "none";
+          } else {
+            sectionElement.style.display = "block";
+            howSection.style.display = "block";
+            getStartedSection.style.display = "block";
+          }
+        });
+      });
     </script>
 
     <div class="selectFest">
@@ -68,6 +169,32 @@
     <div id="artists">
       <!-- This is where the list of artists will be displayed -->
     </div>
+
+    <section id="welcome-section">
+      <h2 class="welcome-section-h2">
+        Create Your Perfect Music Festival Playlist
+      </h2>
+      <p class="welcome-section-p">
+        Discover and create personalized playlists for your favorite music
+        festivals with Festijam.
+      </p>
+    </section>
+
+    <section id="how-section">
+      <h3>How It Works</h3>
+      <p class="how-plabel">
+        Festijam uses Spotify's API to create a playlist of the artists top
+        tracks.
+      </p>
+    </section>
+
+    <section id="get-started-section">
+      <h3>Get Started</h3>
+      <p class="get-started-plabel">
+        Select a festival from the dropdown menu above to get started. Create
+        your perfect music festival playlist in seconds with Festijam.
+      </p>
+    </section>
   </body>
 </html>
 
